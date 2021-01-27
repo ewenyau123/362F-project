@@ -14,9 +14,8 @@ Using the Mac OS, need to use mysql and the phpmyadmin for the database GUI
 
 ###instal phpmyadmin
 1.download the file from https://www.phpmyadmin.net/downloads/
-2.- `unzip phpMyAdmin-5.0.1-all-languages.zip`
-3.- `mv phpMyAdmin-5.0.1-all-languages phpMyAdmin`
-4.
+  - `unzip phpMyAdmin-5.0.1-all-languages.zip`
+  - `mv phpMyAdmin-5.0.1-all-languages phpMyAdmin`
   - `cd /Library/WebServer/Documents/phpmyadmin/`
   - `cp config.sample.inc.php config.inc.php`
 
