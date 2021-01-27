@@ -1,0 +1,156 @@
+<html>
+
+<head> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+  <title>Shopping List</title>
+<script>
+    $(document).ready(function(){
+        $("button").click(function(){
+          var id=this.id;
+          var name = this.name;
+          getcookie = document.cookie.split(";")
+          console.log(getcookie)
+          if(getcookie[0]!=""){
+              var clientid=""
+              if(getcookie[0].includes("client_id")){
+                splitid=getcookie[0].split("=")
+                clientid=splitid[1]
+              }
+              if(name == "product"){
+                var number = parseInt(document.getElementById(id+"-no").value);
+                if (number != 0){
+                    getcookie = document.cookie.split(";")
+                    var cartstring="";
+                    var cartjson = [];
+                    var firstsplit ="";
+                    var secondsplit = "";
+                    try{
+                        firstsplit=getcookie[0].split("=")
+                    }
+                    catch(e){
+                    }
+                    try{
+                        secondsplit=getcookie[1].split("=")
+                    }
+                    catch(e){
+                    }
+                    if(firstsplit!=""){
+                        if(firstsplit[0].trim()=="cart"){
+                            cartstring=firstsplit
+                        }
+                    }
+                    if(secondsplit!=""){
+                        if(secondsplit[0].trim()=="cart"){
+                            cartstring=secondsplit
+                        }
+                    }
+                    if(cartstring!=""){
+                        cartjson = JSON.parse(cartstring[1])
+                    }
+                    var cartjsonlength = cartjson.length
+                    console.log(cartjsonlength)
+                    if (cartjsonlength == 0){
+                        cartjson[cartjsonlength] = {
+                            productid:id,
+                            no:number
+                        }
+                    }
+                    else{
+                        var exist = false
+                        for (i = 0; i < cartjsonlength; i++) {
+                            if (cartjson[i]["productid"] == id){
+                                cartjson[i]["no"] = number;
+                                exist=true
+                            }
+                            
+                        }
+                        if(!exist){
+                                cartjson[cartjsonlength] = {
+                                    productid:id,
+                                    no:number
+                                }
+                        }
+                    }
+                    document.cookie="client_id="+clientid+";max-age=60"
+                    document.cookie="cart ="+JSON.stringify(cartjson)+";max-age=60";
+                    console.log(document.cookie)
+                }
+                else{
+                    alert("Please add the number of products you buy. Thank you!")
+                }
+            }
+            else{
+                
+                if(id=="add"){
+                  addstock()
+                }
+                else{
+                  redirectPost(document.cookie);
+                }
+            }
+          }
+          else{
+                window.location="/"
+          }
+        });
+      });
+      function redirectPost(data) {
+            var form = document.createElement('form');
+            document.body.appendChild(form);
+            form.method = 'post';
+            form.action = "http://localhost:2222/listcart";
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'data'
+            input.value = data.toString();
+            console.log(input.value)
+            form.appendChild(input);
+            console.log(form)
+            form.submit();
+        }
+      function addstock(){
+        window.location="/addstock"
+      }
+</script>
+</head>
+
+<body>
+  <div class="container">
+    <p>List all the Product</p>   
+    <button id="add" type="button" class="btn btn-primary active" onclick="addstock()" >Replenish stock</button>  
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>Unit Price</th>
+          <th>quantity</th>
+          <th>Unit</th>
+          <th>Add to Cart</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <TR>
+        <TD>{{item[0]}}</TD>
+        <TD>{{item[1]}}</TD>
+        <TD>{{item[2]}}</TD>
+        <TD>{{item[3]}}</TD>
+        <td><input id ="{{item[0]}}-no" type="number" min="0" max="{{item[3]}}" step="1" value="0"></input></td>
+        <td><button id="{{item[0]}}" name="product" type="button" class="btn btn-primary active">Add to Cart</button></td>
+        </TR>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button name="checkcart" type="button" class="btn btn-primary active">Check the Cart</button>
+  </div>
+  
+</body>
+</html>

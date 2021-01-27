@@ -1,0 +1,71 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Shopping cart List</title>
+</head>
+<script>
+    function home(){
+        window.location="/"
+    }
+</script>
+<body>
+  <div class="container">
+    <p><h3>List Your Cart</h3></p>
+    <p>Client ID : {{clientid}}</p>            
+    <table class="table table-dark">
+        <thead>
+          <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Unit </th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in data %}
+          <TR>
+          <TD>{{item[0]}}</TD>
+          <TD>{{item[1]}}</TD>
+          <TD>{{item[2]}}</TD>
+          <TD>{{item[3]}}</TD>
+          <TD>{{item[4]}}</TD>
+          </TR>
+          {% endfor %}
+          <tr>
+              <td>Total</td>
+              <td style="text-align:right" colspan="4" >{{total_sum}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Accepted Cards</h3>
+      <div class="icon-container">
+        <i class="fa fa-cc-visa" style="color:navy;"></i>
+        <i class="fa fa-cc-amex" style="color:blue;"></i>
+        <i class="fa fa-cc-mastercard" style="color:red;"></i>
+        <i class="fa fa-cc-discover" style="color:orange;"></i>
+      </div>
+      <br>
+      {{message}}
+      <form id="buyform" method="post" action="/checkout">
+      <input type="hidden" name="clientid" value="{{clientid}}">
+      <input type="hidden" name="cartdetail" value='{{cartdata}}'>
+      <input type="text" id="credit" name="number" minlength="16" maxlength="16" placeholder="Credit Card No" required="required" /><br>
+      Expired Date: <br>
+      <input type="month" id="date" name="expired" min="2021-01" value="2021-02"><br>
+      <input type="text" id="cvv" name="cvv" placeholder="CVV" minlength="3" maxlength="3" required="required" /><br><br>
+        <button id="checkout" type="submit" class="btn btn-primary btn-block btn-large">Check out</button>
+    </form>
+    <button id="home"  type="button" class="btn btn-primary active" onclick="home()" >Home</button>
+  </div>
+  
+</body>
+</html>

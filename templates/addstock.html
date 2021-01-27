@@ -1,0 +1,37 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Shopping cart List</title>
+</head>
+<script>
+    function home(){
+        window.location="/"
+    }
+</script>
+<body>
+  <div class="container">
+    <p><h3>Add Stock</h3></p>       
+    <form action="/addstock" method="POST">
+        <label for="product">Choose one Product:</label>
+        <select name="product" id="product">
+        {% for item in items %}
+        <option value="{{item[0]}}">{{item[1]}}</option>
+        {% endfor %}
+        </select>
+        <br><br>
+        <input id="add" name="quantity" type="number" min="0" step="1" value="0"></input><br>
+        <input id="submit" type="submit" value="Submit">
+      </form>
+    <button id="cart"  type="button" class="btn btn-primary active" onclick="home()" >Home</button>
+  </div>
+  
+</body>
+</html>
