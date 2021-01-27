@@ -257,7 +257,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             for x in message:
                 for y in myresult:
                     if int(x[0]) in y:
-                        if x[2]<y[3]:
+                        if x[2]<=y[3]:
                             sql="UPDATE product SET quantity="+str(y[3]-x[2])+" WHERE product_id = "+str(x[0])+";"
                             mycursor.execute(sql)
                             mydb.commit()
